@@ -1,6 +1,8 @@
 import random
 import numpy as np
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 #We need to model a flip first
 
@@ -168,29 +170,21 @@ for p in [0.50, 0.55, 0.60, 0.65]:
 
 
 df = pd.DataFrame(results)
-df_055 = df[df["true_p"] == 0.55]
 
-heatmap_055 = df_055.pivot(
-    index = "alpha",
-    columns = "beta",
-    values = "sharpe-like"
-    )
- 
+for p in ps:
+    df_true_p = df[df["true_p"] == p]
+    plt.figure(figsize=(6,4))
+    sns.heatmap(df_true_p.pivot(
+        index = "alpha",
+        columns = "beta",
+        values = "sharpe-like"
+        ),
+                annot = True,
+                fmt = ".2f",
+                cmap = "viridis"
+                )
+    plt.title(f"Sharpe-like vs Alpha/Beta (true_p = {p})")
+    plt.xlabel("beta")
+    plt.ylabel("alpha")
 
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-sns.heatmap(heatmap_055, annot=True, fmt=".2f", cmap="magma")
-
-plt.title("Sharpe-like vs Alpha/Beta (true_p = 0.55)")
-plt.xlabel("beta")
-plt.ylabel("alpha")
-
-plt.show()
-
-
-
-
-
-
-
+    plt.show()
