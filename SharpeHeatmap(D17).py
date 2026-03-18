@@ -166,7 +166,7 @@ for p in [0.50, 0.55, 0.60, 0.65]:
                 "average drawdown": average_drawdown,
                 "average detection time": average_detection_time,
                 "detection rate": detection_rate
-                })
+            })
 
 
 df = pd.DataFrame(results)
@@ -186,5 +186,6 @@ for p in ps:
     plt.title(f"Sharpe-like vs Alpha/Beta (true_p = {p})")
     plt.xlabel("beta")
     plt.ylabel("alpha")
-
+    plt.tight_layout()
+    plt.savefig(f"figures/sharpe_heatmap_p_{p:.2f}.png")
     plt.show()

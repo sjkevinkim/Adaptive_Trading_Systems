@@ -44,11 +44,22 @@ Stopping rules must balance:
 ---
 
 ## Visualisations
-PLOTS of Heatmaps and Day 18 Visualisation
 
-- Sharpe heatmaps (Day 17)
-- Detection time vs edge (Day 18)
-- Detection rate vs edge
+### Sharpe Heatmap (true_p = 0.55)
+![Sharpe heatmap](figures/sharpe_heatmap_p_0.55.png)
+
+### Sharpe Heatmap (true_p = 0.60)
+![Sharpe heatmap](figures/sharpe_heatmap_p_0.60.png)
+
+### Sharpe Heatmap (true_p = 0.65)
+![Sharpe heatmap](figures/sharpe_heatmap_p_0.65.png)
+
+### Detection Time vs True Edge
+![Detection time plot](figures/detection_time_vs_true_p.png)
+
+### Detection Rate vs True Edge
+![Detection rate plot](figures/detection_rate_vs_true_p.png)
+
 
 ---
 

@@ -173,16 +173,22 @@ for p in true_ps:
         "detection rate": detection_rate
         })
 
+plt.figure(figsize=(6,4))
 plt.plot(true_ps, detection_times, marker="o")
 plt.title("Average Detection Time vs True Edge")
 plt.xlabel("true_p")
 plt.ylabel("Average Detection Time")
+plt.tight_layout()
+plt.savefig("figures/detection_time_vs_true_p.png")
 plt.show()
 
+plt.figure(figsize=(6,4))
 plt.plot(true_ps, detection_rates, marker="o")
 plt.title("Detection Rate vs The Edge")
 plt.xlabel("true_p")
 plt.ylabel("Detection Rate")
+plt.tight_layout()
+plt.savefig("figures/detection_rate_vs_true_p.png")
 plt.show()
 
 
