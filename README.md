@@ -51,10 +51,10 @@ This measures speed of learning / signal detection
 
 Fixed Sizing
 	•	Discrete actions: No trade / Half size / Full size
-	•	Based on posterior mean \hat{p}
+	•	Based on posterior mean p_hat
 
 Fractional Kelly-Style Sizing
-	•	f = \max(0, 2\hat{p} - 1)
+	•	f = max(0, 2*p_hat - 1)
 	•	Scales position size continuously with confidence
 	•	More aggressive when edge is strong
 	•	More conservative when uncertain
@@ -66,9 +66,9 @@ For each configuration:
 	•	100 trades per run
 	•	300–1000 Monte Carlo simulations
   •	Parameter sweep over:
-	  •	\alpha \in \{0.6, 0.7, 0.8, 0.9\}
-	  •	\beta \in \{0.6, 0.7, 0.8, 0.9\}
-	  •	p \in \{0.50, 0.52, 0.55, 0.58, 0.60, 0.65\}
+	  •	alpha in {0.6, 0.7, 0.8, 0.9}
+	  •	beta in {0.6, 0.7, 0.8, 0.9}
+	  •	p in {0.50, 0.52, 0.55, 0.58, 0.60, 0.65}
 
 Metrics tracked:
 	•	Mean wealth
@@ -85,11 +85,26 @@ Metrics tracked:
 ### Parameter Sensitivity (D1)
 Heatmaps show how performance varies across stopping thresholds:
 
+### Sharpe Heatmap (true_p = 0.55)
+![Sharpe heatmap](figures/sharpe_heatmap_p_0.55.png)
+
+### Sharpe Heatmap (true_p = 0.60)
+![Sharpe heatmap](figures/sharpe_heatmap_p_0.60.png)
+
+### Sharpe Heatmap (true_p = 0.65)
+![Sharpe heatmap](figures/sharpe_heatmap_p_0.65.png)
+
 Insight:
 	•	Conservative stopping (high \alpha) improves survivability
 	•	Weak edges require looser stopping to avoid premature exit
 
 ### Detection Speed vs Edge (D2)
+
+### Detection Time vs True Edge
+![Detection time plot](figures/detection_time_vs_true_p.png)
+
+### Detection Rate vs True Edge
+![Detection rate plot](figures/detection_rate_vs_true_p.png)
 Insights:
 	•	Stronger edges → faster detection
 	•	Weak edges → high noise → slow learning
@@ -117,43 +132,14 @@ Insights:
 	•	Stronger edges improve both Sharpe and detection speed:
     Allow more aggressive sizing and faster scaling
 	•	Stopping rules encode risk preferences
-	•	Low \alpha: risk missing good strategies
-	•	High \alpha: risk staying in bad ones
+	•	Low alpha: risk missing good strategies
+	•	High alpha: risk staying in bad ones
 	•	Kelly sizing adapts to confidence
 	•	Exploits strong edges efficiently
 	•	But increases sensitivity to estimation error
 	•	Trade-off:
     Early survival vs long-term optimal growth
 
-
-### 1. Sharpe Heatmap with Varying Threshold Parameters
-
-### Sharpe Heatmap (true_p = 0.55)
-![Sharpe heatmap](figures/sharpe_heatmap_p_0.55.png)
-
-### Sharpe Heatmap (true_p = 0.60)
-![Sharpe heatmap](figures/sharpe_heatmap_p_0.60.png)
-
-### Sharpe Heatmap (true_p = 0.65)
-![Sharpe heatmap](figures/sharpe_heatmap_p_0.65.png)
-
-### 2. Investigation of Detection Times and Rates of Fixed Sizing Strategy
-
-### Detection Time vs True Edge
-![Detection time plot](figures/detection_time_vs_true_p.png)
-
-### Detection Rate vs True Edge
-![Detection rate plot](figures/detection_rate_vs_true_p.png)
-
-### 3. Comparison of Sharpe under Fractional Kelly Sizing and Fixed Sizing Strategies
-
----
-
-
-
----
-
-## Key Insight
 
 ---
 
@@ -162,5 +148,6 @@ Insights:
 - NumPy
 - Pandas
 - Matplotlib / Seaborn
+
 
 ---
