@@ -9,6 +9,12 @@ The simulation models:
 - Edge detection thresholds
 - Monte Carlo simulation of trading outcomes
 
+## Progress
+
+1. Analysis of Sharpe Heatmap of Fixed Sizing Strategy under Varying Parameters
+2. Investigation of Detection Times and Rates of Fixed Sizing Strategy
+3. Comparison of Sharpe under Fractional Kelly Sizing and Fixed Sizing Strategies
+
 ---
 
 ## Key Questions
@@ -23,7 +29,7 @@ The simulation models:
 - Bayesian updating over discrete probability hypotheses
 - Sequential decision rules:
   - Stop if high probability of bad edge
-  - Trade with variable size depending on confidence
+  - Trade with variable size depending on confidence (Fixed vs Kelly)
 - Parameter sweeps over stopping and detection thresholds
 
 ---
@@ -38,12 +44,12 @@ Higher edge leads to faster detection and better risk-adjusted performance.
 
 ### 3. Trade-off between Type I and Type II errors
 Stopping rules must balance:
-- exiting profitable strategies too early
-- staying too long in unprofitable ones
+- Exiting profitable strategies too early
+- Staying too long in unprofitable ones
 
 ---
 
-## Visualisations
+### 1. Sharpe Heatmap with Varying Threshold Parameters
 
 ### Sharpe Heatmap (true_p = 0.55)
 ![Sharpe heatmap](figures/sharpe_heatmap_p_0.55.png)
@@ -54,17 +60,23 @@ Stopping rules must balance:
 ### Sharpe Heatmap (true_p = 0.65)
 ![Sharpe heatmap](figures/sharpe_heatmap_p_0.65.png)
 
+### 2. Investigation of Detection Times and Rates of Fixed Sizing Strategy
+
 ### Detection Time vs True Edge
 ![Detection time plot](figures/detection_time_vs_true_p.png)
 
 ### Detection Rate vs True Edge
 ![Detection rate plot](figures/detection_rate_vs_true_p.png)
 
+### 3. Comparison of Sharpe under Fractional Kelly Sizing and Fixed Sizing Strategies
+
+---
+
+
 
 ---
 
 ## Key Insight
-Detection difficulty is driven by signal-to-noise ratio, not just expected return.
 
 ---
 
@@ -75,8 +87,3 @@ Detection difficulty is driven by signal-to-noise ratio, not just expected retur
 - Matplotlib / Seaborn
 
 ---
-
-## Future Work
-- Continuous probability models
-- Transaction costs
-- Real market data backtesting
