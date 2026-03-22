@@ -263,9 +263,9 @@ merged["sharpe_diff"] = merged["sharpe-like_kelly"] - merged["sharpe-like_fixed"
 merged["drawdown_diff"] = merged["average drawdown_kelly"] - merged["average drawdown_fixed"]
 
 for p in true_ps:
-    diff_df = merged[merged["true_p"] == p]
+    kelly_diff_df = merged[merged["true_p"] == p]
     plt.figure(figsize=(6,4))
-    sns.heatmap(diff_df.pivot(
+    sns.heatmap(kelly_diff_df.pivot(
         index="alpha",
         columns="beta",
         values="sharpe_diff"
@@ -281,5 +281,27 @@ for p in true_ps:
     plt.tight_layout()
     plt.savefig(f"figures/kelly_fixed_sharpe_{p:.2f}.png")
     plt.show()
+
+for p in true_ps:
+    drawdown_diff_df = merged[merged["true_p"] == p]
+    plt.figure(figsize=(6,4))
+    sns.heatmap(drawdown_diff_df.pivot(
+        index = "alpha",
+        columns = "beta",
+        values = "drawdown_diff",
+        ),
+                annot=True,
+                fmt=".2f",
+                cmap="coolwarm",
+                center = 0
+                )
+    plt.title(f"Kelly - Fixed Drawdown Difference (true_p = {p})")
+    plt.xlabel("beta")
+    plt.ylabel("alpha")
+    plt.tight_layout()
+    plt.savefig(f"figures/kelly_fixed_drawdown_{p:.2f}.png")
+    plt.show()
+    
+        
 
 
