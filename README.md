@@ -5,14 +5,14 @@
 This project investigates how a trader should learn, size positions, and decide when to stop trading under uncertainty.
 
 We simulate a simple trading environment (biased coin) and explore:
-•	Bayesian belief updating of edge
-•	Sequential stopping rules (Type I vs Type II error tradeoff)
-•	Position sizing strategies (Fixed vs Kelly-style sizing)
+- Bayesian belief updating of edge
+- Sequential stopping rules (Type I vs Type II error tradeoff)
+- Position sizing strategies (Fixed vs Kelly-style sizing)
 
 The goal is to understand how edge strength, confidence thresholds, and sizing rules interact to impact:
-•	Profitability (Sharpe-like performance)
-•	Risk (drawdowns)
-•	Speed of detecting a true edge
+- Profitability (Sharpe-like performance)
+- Risk (drawdowns)
+- Speed of detecting a true edge
 
 
 ---
@@ -29,8 +29,8 @@ prior = [0.4, 0.2, 0.2, 0.2]
 ```
 
 Beliefs are updated after each trade using likelihood weighting:
-•	Heads → weight by p
-•	Tails → weight by 1 - p
+- Heads → weight by p
+- Tails → weight by 1 - p
 
 ```python
 def update_belief(belief: list[float], outcome: str, ps: list[float]) -> list[float]:
@@ -47,15 +47,15 @@ def update_belief(belief: list[float], outcome: str, ps: list[float]) -> list[fl
 
 Stopping Rule (Sequential Testing)
 We stop trading if:
-•	Probability edge is “bad” exceeds threshold "alpha"
+- Probability edge is “bad” exceeds threshold "alpha"
 
 This captures:
-•	Type I error → stopping too early (missing real edge)
-•	Type II error → continuing in a bad strategy
+- Type I error → stopping too early (missing real edge)
+- Type II error → continuing in a bad strategy
 
 Detection Rule
 We detect a “good edge” when:
-•	Probability p > 0.5 exceeds threshold "beta"
+- Probability p > 0.5 exceeds threshold "beta"
 
 This measures speed of learning / signal detection
 
@@ -63,32 +63,32 @@ This measures speed of learning / signal detection
 ### 3. Position Sizing Strategies
 
 Fixed Sizing
-•	Discrete actions: No trade / Half size / Full size
-•	Based on posterior mean p_hat
+- Discrete actions: No trade / Half size / Full size
+- Based on posterior mean p_hat
 
 Fractional Kelly-Style Sizing
-•	f = max(0, 2*p_hat - 1)
-•	Scales position size continuously with confidence
-•	More aggressive when edge is strong
-•	More conservative when uncertain
+- f = max(0, 2*p_hat - 1)
+- Scales position size continuously with confidence
+- More aggressive when edge is strong
+- More conservative when uncertain
 
 
 ### 4. Simulation Setup
 
 For each configuration:
-•	100 trades per run
-•	300–1000 Monte Carlo simulations
-•	Parameter sweep over:
-  •	alpha in {0.6, 0.7, 0.8, 0.9}
-  •	beta in {0.6, 0.7, 0.8, 0.9}
-  •	p in {0.50, 0.52, 0.55, 0.58, 0.60, 0.65}
+- 100 trades per run
+- 300–1000 Monte Carlo simulations
+- Parameter sweep over:
+    - alpha in {0.6, 0.7, 0.8, 0.9}
+    - beta in {0.6, 0.7, 0.8, 0.9}
+    - p in {0.50, 0.52, 0.55, 0.58, 0.60, 0.65}
 
 Metrics tracked:
-•	Mean wealth
-•	Sharpe-like ratio
-•	Maximum drawdown
-•	Detection time
-•	Detection rate
+- Mean wealth
+- Sharpe-like ratio
+- Maximum drawdown
+- Detection time
+- Detection rate
 
 
 ---
@@ -120,9 +120,9 @@ Insight:
 ![Detection rate plot](figures/detection_rate_vs_true_p.png)
 
 Insights:
-•	Stronger edges → faster detection
-•	Weak edges → high noise → slow learning
-•	Detection reliability improves sharply as edge increases
+- Stronger edges → faster detection
+- Weak edges → high noise → slow learning
+- Detection reliability improves sharply as edge increases
   
 ### Kelly vs Fixed Sizing (D3)
 We directly compare strategies:
