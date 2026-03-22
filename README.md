@@ -7,7 +7,7 @@ This project investigates how a trader should learn, size positions, and decide 
 We simulate a simple trading environment (biased coin) and explore:
 - Bayesian belief updating of edge
 - Sequential stopping rules (Type I vs Type II error tradeoff)
-- Position sizing strategies (Fixed vs Kelly-style sizing)
+- Position sizing strategies (Fixed vs Fractional Kelly-style sizing)
 
 The goal is to understand how edge strength, confidence thresholds, and sizing rules interact to impact:
 - Profitability (Sharpe-like performance)
@@ -124,7 +124,7 @@ Insights:
 - Weak edges → high noise → slow learning
 - Detection reliability improves sharply as edge increases
   
-### Kelly vs Fixed Sizing (D3)
+### Kelly (Fractional) vs Fixed Sizing (D3)
 We directly compare strategies:
 Sharpe Difference = Kelly - Fixed
 Drawdown Difference = Kelly - Fixed
@@ -145,17 +145,22 @@ Drawdown Difference = Kelly - Fixed
 
 
 ### Key Insights
-- Kelly sizing improves Sharpe-like performance when the trading edge is sufficiently strong, as it scales position size proportionally to estimated edge and exploits high-confidence opportunities more efficiently
+- Fractional Kelly sizing (0.5× Kelly) improves Sharpe-like performance when the trading edge is sufficiently strong, as position size scales with posterior confidence and efficiently exploits high-probability opportunities
 
-- Under weak-edge regimes, Kelly sizing can underperform fixed sizing due to estimation error, where noise in early observations leads to overly aggressive position sizing
+- Under weak-edge regimes, fixed sizing can outperform in Sharpe-like terms, since fractional Kelly reduces exposure when beliefs are uncertain, limiting both gains and losses
 
-- Kelly sizing generally results in larger drawdowns compared to fixed sizing, reflecting the trade-off between higher growth and increased volatility
+- Fractional Kelly produces **lower drawdowns than fixed sizing** in this framework, as it adaptively reduces position size during periods of uncertainty and early noise
 
-- Fixed sizing is more robust under uncertainty, as it limits exposure when confidence is low and reduces sensitivity to early variance
+- Fixed sizing incurs larger drawdowns in weak-edge environments, since it maintains constant exposure regardless of signal strength or confidence
 
-- The performance advantage of Kelly increases with signal-to-noise ratio: as true edge increases, Kelly becomes more reliable and dominates fixed sizing in risk-adjusted returns
+- The advantage of fractional Kelly increases with signal-to-noise ratio: as the true edge strengthens, posterior estimates stabilise faster, allowing Kelly to scale exposure more effectively
 
-- There exists a clear trade-off between growth and survivability: Kelly maximises long-term growth under correct estimates, while fixed sizing provides more stable outcomes under model uncertainty
+- Fractional Kelly acts as an implicit risk control mechanism, avoiding overbetting when edge estimates are noisy and increasing exposure only when sufficient evidence is accumulated
+
+- Overall, the trade-off is between:
+  - **Adaptive growth (fractional Kelly)**: higher efficiency when signal is reliable  
+  - **Robust simplicity (fixed sizing)**: stable but less responsive to changing confidence
+
 
 ---
 

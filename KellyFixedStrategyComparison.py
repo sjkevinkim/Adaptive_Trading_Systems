@@ -97,7 +97,7 @@ def run_fixed_simulation(
 
         wealth_path.append(wealth)
 
-        if detection == True and detection_time is None:
+        if detection and detection_time is None:
             detection_time = n+1
         else: pass
 
