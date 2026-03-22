@@ -108,8 +108,8 @@ Heatmaps show how performance varies across stopping thresholds:
 ![Sharpe heatmap](figures/sharpe_heatmap_p_0.65.png)
 
 Insight:
-•	Conservative stopping (high alpha) improves survivability
-•	Weak edges require looser stopping to avoid premature exit
+- Conservative stopping (high alpha) improves survivability
+- Weak edges require looser stopping to avoid premature exit
 
 ### Detection Speed vs Edge (D2)
 
