@@ -132,7 +132,7 @@ def run_kelly_simulation(
         
         track_belief.append(belief[:])
         track_p_hat.append(p_hat)
-        size = max(0, 0.5 * (2*p_hat - 1))
+        size = max(0.0, 0.5 * (2*p_hat - 1))
 
         action = decide_action(belief, ps, bad_edge_threshold, alpha)
 
@@ -263,9 +263,9 @@ merged["sharpe_diff"] = merged["sharpe-like_kelly"] - merged["sharpe-like_fixed"
 merged["drawdown_diff"] = merged["average drawdown_kelly"] - merged["average drawdown_fixed"]
 
 for p in true_ps:
-    kelly_diff_df = merged[merged["true_p"] == p]
+    diff_df = merged[merged["true_p"] == p]
     plt.figure(figsize=(6,4))
-    sns.heatmap(kelly_diff_df.pivot(
+    sns.heatmap(diff_df.pivot(
         index="alpha",
         columns="beta",
         values="sharpe_diff"
@@ -283,9 +283,9 @@ for p in true_ps:
     plt.show()
 
 for p in true_ps:
-    drawdown_diff_df = merged[merged["true_p"] == p]
+    diff_df = merged[merged["true_p"] == p]
     plt.figure(figsize=(6,4))
-    sns.heatmap(drawdown_diff_df.pivot(
+    sns.heatmap(diff_df.pivot(
         index = "alpha",
         columns = "beta",
         values = "drawdown_diff",

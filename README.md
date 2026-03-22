@@ -105,6 +105,7 @@ Insight:
 
 ### Detection Rate vs True Edge
 ![Detection rate plot](figures/detection_rate_vs_true_p.png)
+
 Insights:
 	•	Stronger edges → faster detection
 	•	Weak edges → high noise → slow learning
@@ -113,6 +114,22 @@ Insights:
 ### Kelly vs Fixed Sizing (D3)
 We directly compare strategies:
 Sharpe Difference = Kelly - Fixed
+Drawdown Difference = Kelly - Fixed
+
+![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.50.png)
+![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.52.png)
+![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.55.png)
+![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.58.png)
+![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.60.png)
+![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.65.png)
+
+![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.50.png)
+![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.52.png)
+![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.55.png)
+![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.58.png)
+![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.60.png)
+![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.65.png)
+
 
 Insights:
 	•	Kelly outperforms when:
