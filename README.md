@@ -108,7 +108,7 @@ Heatmaps show how performance varies across stopping thresholds:
 ![Sharpe heatmap](figures/sharpe_heatmap_p_0.65.png)
 
 Insight:
-	•	Conservative stopping (high \alpha) improves survivability
+	•	Conservative stopping (high alpha) improves survivability
 	•	Weak edges require looser stopping to avoid premature exit
 
 ### Detection Speed vs Edge (D2)
@@ -120,9 +120,9 @@ Insight:
 ![Detection rate plot](figures/detection_rate_vs_true_p.png)
 
 Insights:
-	•	Stronger edges → faster detection
-	•	Weak edges → high noise → slow learning
-	•	Detection reliability improves sharply as edge increases
+	- Stronger edges → faster detection
+	- Weak edges → high noise → slow learning
+	- Detection reliability improves sharply as edge increases
   
 ### Kelly vs Fixed Sizing (D3)
 We directly compare strategies:
@@ -144,7 +144,7 @@ Drawdown Difference = Kelly - Fixed
 ![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.65.png)
 
 
-## Key Insights
+### Key Insights
 	•	Weak edges are dominated by noise
 		→ Require longer horizons and conservative stopping rules
 	•	Stronger edges improve both Sharpe and detection speed
