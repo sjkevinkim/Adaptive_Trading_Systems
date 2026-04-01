@@ -1,101 +1,39 @@
-# Sequential Bayesian Trading Strategy Simulator
+# Adaptive Position Sizing and Regime Detection in Trading Systems
 
-## Overview
+## Project Overview
 
-This project investigates how a trader should learn, size positions, and decide when to stop trading under uncertainty.
+This project investigates how a trader should learn and size positions to manage risk under uncertainty, particularly in environments where the underlying edge may change over time.
 
-We simulate a simple trading environment (biased coin) and explore:
-- Bayesian belief updating of edge
-- Sequential stopping rules (Type I vs Type II error tradeoff)
-- Position sizing strategies (Fixed vs Fractional Kelly-style sizing)
+To study this in a controlled setting, I begin with a simple simulation framework based on repeated coin flips. Each flip represents a trade, where outcomes (“Heads” or “Tails”) correspond to profit and loss signals. The true probability of success is unknown and must be inferred from sequential observations.
 
-The goal is to understand how edge strength, confidence thresholds, and sizing rules interact to impact:
-- Profitability (Sharpe-like performance)
-- Risk (drawdowns)
-- Speed of detecting a true edge
+Using **Monte Carlo simulation**, I run many independent paths to evaluate strategy performance in terms of:
+    - wealth growth
+    - drawdowns
+    - robustness across different scenarios
 
+We develop the project from a simple static idea into increasingly adaptive strategies.
 
----
+The project initially utilises a static fixed-fraction strategy, where sizing does not respond to outcomes.
 
-## Methodology
+Next, I introduce Bayesian sequential learning, with a discrete prior over possible probabilities, and later extending this to a continuous Beta distribution. This allows the model to update its belief about the underlying edge after each observation in a more realistic way.
 
-### 1. Bayesian Learning Framework
+Building on this, I implement fractional Kelly position sizing, linking belief updates directly to capital allocation.
 
-We assume the true edge p is unknown and maintain a discrete prior over possible values:
+To capture more realistic trading dynamics , I then introduce a regime change, where the true probability shifts from a strong positive edge to a no-edge environment. This creates a non-stationary setting in which strategies must balance responsiveness and stability.
 
-```python
-ps = [0.5, 0.55, 0.60, 0.65]
-prior = [0.4, 0.2, 0.2, 0.2]
-```
+To address this, I develop:
+    - Rolling-window estimator (fast but noisy)
+    - Bayesian estimator (stable but slow)
+    - Hybrid model that combines both approaches
 
-Beliefs are updated after each trade using likelihood weighting:
-- Heads → weight by p
-- Tails → weight by 1 - p
-
-```python
-def update_belief(belief: list[float], outcome: str, ps: list[float]) -> list[float]:
-    new_weights = []
-    for w,p in zip(belief, ps):
-        if outcome ==  "H":
-            likelihood = p
-        else: likelihood = 1-p
-        new_weights.append(likelihood * w)
-    return normalise_weights(new_weights)
-```
-
-### 2. Trading Decisions
-
-Stopping Rule (Sequential Testing)
-We stop trading if:
-- Probability edge is “bad” exceeds threshold "alpha"
-
-This captures:
-- Type I error → stopping too early (missing real edge)
-- Type II error → continuing in a bad strategy
-
-Detection Rule
-We detect a “good edge” when:
-- Probability p > 0.5 exceeds threshold "beta"
-
-This measures speed of learning / signal detection
-
-
-### 3. Position Sizing Strategies
-
-Fixed Sizing
-- Discrete actions: No trade / Half size / Full size
-- Based on posterior mean p_hat
-
-Fractional Kelly-Style Sizing
-- f = max(0, 2*p_hat - 1)
-- Scales position size continuously with confidence
-- More aggressive when edge is strong
-- More conservative when uncertain
-
-
-### 4. Simulation Setup
-
-For each configuration:
-- 100 trades per run
-- 300–1000 Monte Carlo simulations
-- Parameter sweep over:
-    - alpha in {0.6, 0.7, 0.8, 0.9}
-    - beta in {0.6, 0.7, 0.8, 0.9}
-    - p in {0.50, 0.52, 0.55, 0.58, 0.60, 0.65}
-
-Metrics tracked:
-- Mean wealth
-- Sharpe-like ratio
-- Maximum drawdown
-- Detection time
-- Detection rate
-
+Finally, I incorporate a regime detection mechanism, where divergence between models is used as a signal to reduce position sizes in order to limit drawdowns.
 
 ---
 
-## Results
+## Static Strategies
 
-### Parameter Sensitivity (D1)
+### Sharpe-like Heatmaps (D1)
+
 Heatmaps show how performance varies across stopping thresholds:
 
 ### Sharpe Heatmap (true_p = 0.55)
@@ -111,7 +49,7 @@ Insight:
 - Conservative stopping (high alpha) improves survivability
 - Weak edges require looser stopping to avoid premature exit
 
-### Detection Speed vs Edge (D2)
+### Detection (D2)
 
 ### Detection Time vs True Edge
 ![Detection time plot](figures/detection_time_vs_true_p.png)
@@ -123,28 +61,39 @@ Insights:
 - Stronger edges → faster detection
 - Weak edges → high noise → slow learning
 - Detection reliability improves sharply as edge increases
-  
+
+### Key Insights
+
+---
+
+## Adaptive Estimations
+
 ### Kelly (Fractional) vs Fixed Sizing (D3)
+ 
 We directly compare strategies:
 Sharpe Difference = Kelly - Fixed
 Drawdown Difference = Kelly - Fixed
 
-![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.50.png)
-![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.52.png)
-![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.55.png)
-![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.58.png)
-![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.60.png)
-![Kelly - Fixed Sharpe](figures/kelly_fixed_sharpe_0.65.png)
+### Sharpe Difference (Kelly - Fixed)
 
-![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.50.png)
-![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.52.png)
-![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.55.png)
-![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.58.png)
-![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.60.png)
-![Kelly - Fixed Drawdown](figures/kelly_fixed_drawdown_0.65.png)
+| true_p = 0.50 | true_p = 0.55 |
+|--------------|--------------|
+| ![](figures/kelly_fixed_sharpe_0.50.png) | ![](figures/kelly_fixed_sharpe_0.55.png) |
 
+| true_p = 0.60 | true_p = 0.65 |
+|--------------|--------------|
+| ![](figures/kelly_fixed_sharpe_0.60.png) | ![](figures/kelly_fixed_sharpe_0.65.png) |
 
-### Key Insights
+### Drawdown Difference (Kelly - Fixed)
+
+| true_p = 0.50 | true_p = 0.55 |
+|--------------|--------------|
+| ![](figures/kelly_fixed_drawdown_0.50.png) | ![](figures/kelly_fixed_drawdown_0.55.png) |
+
+| true_p = 0.60 | true_p = 0.65 |
+|--------------|--------------|
+| ![](figures/kelly_fixed_drawdown_0.60.png) | ![](figures/kelly_fixed_drawdown_0.65.png) |
+
 - Fractional Kelly sizing (0.5× Kelly) improves Sharpe-like performance when the trading edge is sufficiently strong, as position size scales with posterior confidence and efficiently exploits high-probability opportunities
 
 - Under weak-edge regimes, fixed sizing can outperform in Sharpe-like terms, since fractional Kelly reduces exposure when beliefs are uncertain, limiting both gains and losses
@@ -161,14 +110,38 @@ Drawdown Difference = Kelly - Fixed
   - **Adaptive growth (fractional Kelly)**: higher efficiency when signal is reliable  
   - **Robust simplicity (fixed sizing)**: stable but less responsive to changing confidence
 
+### Beta Distribution (D4)
+
+### Regime Change (D5)
+
+### Adaptation (D6)
+
+### Key Insights
+
 
 ---
+
+## Hybrid Models (D7)
+
+### Key Insights
+
+--
+
+## Regime Detection & Control (D8)
+
+### Key Insights
+
+-- 
+
+## Limitations
+
+--
 
 ## Tech Stack
 - Python
 - NumPy
 - Pandas
-- Matplotlib / Seaborn
+- Matplotlib / Seaborn / Scipy
 
 
 ---

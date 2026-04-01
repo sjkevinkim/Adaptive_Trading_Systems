@@ -4,11 +4,12 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-#We want to compare the outcomes of 2 strategies
-#Fixed Sizing Strategy vs Kelly Sizing Strategy
+
+# ---------------------------
+# 1. Environment
+# ---------------------------
 
 
-#We need to model a flip first
 def run_flip(true_p):
     if random.random() < true_p: return "H"
     else: return "T"
@@ -19,6 +20,12 @@ def normalise_weights(weights: list[float]) -> list[float]:
         n = len(weights)
         return [1.0 / n] * n
     return [w / total for w in weights]
+
+
+# ---------------------------
+# 2. Bayesian belief update
+# ---------------------------
+
 
 def update_belief(belief: list[float], outcome: str, ps: list[float]) -> list[float]:
     new_weights = []
@@ -33,12 +40,13 @@ def update_belief(belief: list[float], outcome: str, ps: list[float]) -> list[fl
 def expected_p(belief: list[float], ps: list[float]) -> float:
     return sum(w * p for w,p in zip(belief, ps))
 
+# ---------------------------
+# 3. Decision Detection rules
+# ---------------------------
 
 def decide_action(belief, ps, bad_edge_threshold, alpha):
-    # Option 2: confidence-based "bad edge" probability
     prob_bad = sum(w for w, p in zip(belief, ps) if p <= bad_edge_threshold)
 
-    # posterior mean p_hat
     p_hat = sum(w * p for w, p in zip(belief, ps))
 
     if prob_bad > alpha:
@@ -48,10 +56,13 @@ def decide_action(belief, ps, bad_edge_threshold, alpha):
     else:  # p_hat >= 0.6
         return "full"
     
-#when have sufficient evidence to conclude that edge exists
 def detect(belief, ps, good_edge_threshold, beta):
     prob_good = sum(w for w,p in zip(belief,ps) if p > good_edge_threshold)
     return prob_good > beta
+
+# ---------------------------
+# 4. One simulation run (Fixed)
+# ---------------------------
 
 def run_fixed_simulation(
     num_flips: int,
@@ -104,6 +115,10 @@ def run_fixed_simulation(
     
     return wealth, False, num_flips, wealth_path, detection_time
 
+# ---------------------------
+# 5. One simulation run (Kelly)
+# ---------------------------
+
 def run_kelly_simulation(
     num_flips: int,
     true_p: float,
@@ -153,6 +168,12 @@ def run_kelly_simulation(
     
     return wealth, False, num_flips, wealth_path, detection_time
 
+
+# ---------------------------
+# 6. Drawdown helper
+# ---------------------------
+
+
 def compute_max_drawdown(wealth_path):
     peak = wealth_path[0]
     max_drawdown = 0
@@ -163,6 +184,12 @@ def compute_max_drawdown(wealth_path):
         if drawdown > max_drawdown:
             max_drawdown = drawdown
     return max_drawdown
+
+
+
+# ---------------------------
+# 7. Many simulation runs
+# ---------------------------
 
         
 def run_many_games(sim_fn, num_games, num_flips, true_p, prior, ps, bad_edge_threshold, alpha, good_edge_threshold, beta):
@@ -198,16 +225,22 @@ def run_many_games(sim_fn, num_games, num_flips, true_p, prior, ps, bad_edge_thr
 
     return avg_wealth, stop_rate, avg_num_trades, std_wealth, quantiles, average_drawdown, average_detection_time, detection_rate
 
+
+# ---------------------------
+# 8. Run many and inspect
+# ---------------------------
+
+
 ps = [0.5, 0.55, 0.60, 0.65]
 prior = [0.4, 0.2, 0.2, 0.2]
 
-true_ps = [0.5, 0.52, 0.55, 0.58, 0.60, 0.65]
+true_ps = [0.5, 0.55, 0.60, 0.65]
 
 kelly_results = []
 fixed_results = []
 
 
-
+# Half-Kelly Sizing Strategy 
 for p in true_ps:
     for a in [0.6, 0.7, 0.8, 0.9]:
         for b in [0.6, 0.7, 0.8, 0.9]:
@@ -228,6 +261,7 @@ for p in true_ps:
                 "detection rate": detection_rate
                 })
 
+# Fixed Sizing Strategy 
 for p in true_ps:
     for a in [0.6, 0.7, 0.8, 0.9]:
         for b in [0.6, 0.7, 0.8, 0.9]:
@@ -252,6 +286,7 @@ kelly_df = pd.DataFrame(kelly_results)
 fixed_df = pd.DataFrame(fixed_results)
 
 
+# Half-Kelly vs Fixed Comparison
 merged = pd.merge(
     kelly_df,
     fixed_df,
@@ -262,6 +297,8 @@ merged = pd.merge(
 merged["sharpe_diff"] = merged["sharpe-like_kelly"] - merged["sharpe-like_fixed"]
 merged["drawdown_diff"] = merged["average drawdown_kelly"] - merged["average drawdown_fixed"]
 
+
+# Plot 1: Half-Kelly Sharpe-like Comparison
 for p in true_ps:
     diff_df = merged[merged["true_p"] == p]
     plt.figure(figsize=(6,4))
@@ -282,6 +319,7 @@ for p in true_ps:
     plt.savefig(f"figures/kelly_fixed_sharpe_{p:.2f}.png")
     plt.show()
 
+# Plot 2: Half-Kelly Drawdown Comparison
 for p in true_ps:
     diff_df = merged[merged["true_p"] == p]
     plt.figure(figsize=(6,4))

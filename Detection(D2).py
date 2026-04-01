@@ -4,7 +4,12 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-#We need to model a flip first
+
+
+# ---------------------------
+# 1. Environment
+# ---------------------------
+
 
 def run_flip(true_p):
     if random.random() < true_p: return "H"
@@ -16,6 +21,15 @@ def normalise_weights(weights: list[float]) -> list[float]:
         n = len(weights)
         return [1.0 / n] * n
     return [w / total for w in weights]
+
+
+
+
+# ---------------------------
+# 2. Bayesian belief update
+# ---------------------------
+
+
 
 def update_belief(belief: list[float], outcome: str, ps: list[float]) -> list[float]:
     new_weights = []
@@ -31,11 +45,14 @@ def expected_p(belief: list[float], ps: list[float]) -> float:
     return sum(w * p for w,p in zip(belief, ps))
 
 
+# ---------------------------
+# 3. Decision Detection rules
+# ---------------------------
+
+
 def decide_action(belief, ps, bad_edge_threshold, alpha):
-    # Option 2: confidence-based "bad edge" probability
     prob_bad = sum(w for w, p in zip(belief, ps) if p <= bad_edge_threshold)
 
-    # posterior mean p_hat
     p_hat = sum(w * p for w, p in zip(belief, ps))
 
     if prob_bad > alpha:
@@ -45,10 +62,15 @@ def decide_action(belief, ps, bad_edge_threshold, alpha):
     else:  # p_hat >= 0.6
         return "full"
 
-#when have sufficient evidence to conclude that edge exists
 def detect(belief, ps, good_edge_threshold, beta):
     prob_good = sum(w for w,p in zip(belief,ps) if p > good_edge_threshold)
     return prob_good > beta
+
+
+# ---------------------------
+# 4. One simulation run
+# ---------------------------
+
 
 def run_simulation(
     num_flips: int,
@@ -101,6 +123,12 @@ def run_simulation(
     
     return wealth, False, num_flips, wealth_path, detection_time
 
+
+# ---------------------------
+# 5. Drawdown helper
+# ---------------------------
+
+
 def compute_max_drawdown(wealth_path):
     peak = wealth_path[0]
     max_drawdown = 0
@@ -112,6 +140,10 @@ def compute_max_drawdown(wealth_path):
             max_drawdown = drawdown
     return max_drawdown
 
+
+# ---------------------------
+# 6. Many simulation run
+# ---------------------------
         
 def run_many_games(num_games, num_flips, true_p, prior, ps, bad_edge_threshold, alpha, good_edge_threshold, beta):
     track_wealth = []
@@ -146,11 +178,16 @@ def run_many_games(num_games, num_flips, true_p, prior, ps, bad_edge_threshold, 
 
     return avg_wealth, stop_rate, avg_num_trades, std_wealth, quantiles, average_drawdown, average_detection_time, detection_rate
 
+
+# ---------------------------
+# 7. Run many and inspect
+# ---------------------------
+
 ps = [0.5, 0.55, 0.60, 0.65]
 prior = [0.4, 0.2, 0.2, 0.2]
 
 results = []
-true_ps = [0.5, 0.52, 0.55, 0.58, 0.60, 0.65]
+true_ps = [0.5, 0.55, 0.60, 0.65]
 detection_times = []
 detection_rates = []
 
@@ -173,6 +210,7 @@ for p in true_ps:
         "detection rate": detection_rate
         })
 
+# Plot 1: Average Detection Time vs True Edge
 plt.figure(figsize=(6,4))
 plt.plot(true_ps, detection_times, marker="o")
 plt.title("Average Detection Time vs True Edge")
@@ -182,6 +220,8 @@ plt.tight_layout()
 plt.savefig("figures/detection_time_vs_true_p.png")
 plt.show()
 
+
+# Plot 2: Detection Rate vs Edge
 plt.figure(figsize=(6,4))
 plt.plot(true_ps, detection_rates, marker="o")
 plt.title("Detection Rate vs The Edge")
