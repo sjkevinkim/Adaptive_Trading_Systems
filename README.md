@@ -36,14 +36,14 @@ Finally, I incorporate a regime detection mechanism, where divergence between mo
 
 Heatmaps show how performance varies across stopping thresholds:
 
-### Sharpe Heatmap (true_p = 0.55)
-![Sharpe heatmap](figures/sharpe_heatmap_p_0.55.png)
+| true_p = 0.50 | true_p = 0.55 |
+|--------------|--------------|
+| ![](figures/sharpe_heatmap_p_0.50.png) | ![](figures/sharpe_heatmap_p_0.55.png) |
 
-### Sharpe Heatmap (true_p = 0.60)
-![Sharpe heatmap](figures/sharpe_heatmap_p_0.60.png)
+| true_p = 0.60 | true_p = 0.65 |
+|--------------|--------------|
+| ![](figures/sharpe_heatmap_p_0.60.png) | ![](figures/sharpe_heatmap_p_0.65.png) |
 
-### Sharpe Heatmap (true_p = 0.65)
-![Sharpe heatmap](figures/sharpe_heatmap_p_0.65.png)
 
 Insight:
 - Conservative stopping (high alpha) improves survivability
@@ -51,11 +51,10 @@ Insight:
 
 ### Detection (D2)
 
-### Detection Time vs True Edge
-![Detection time plot](figures/detection_time_vs_true_p.png)
+| Detection Time vs True Edge | Detection Rate vs True Edge |
+|-----------------------------|-----------------------------|
+| ![](figures/detection_time_vs_true_p.png) | ![](figures/detection_rate_vs_true_p.png)
 
-### Detection Rate vs True Edge
-![Detection rate plot](figures/detection_rate_vs_true_p.png)
 
 Insights:
 - Stronger edges → faster detection
