@@ -26,42 +26,42 @@ Finally, I incorporate a regime detection mechanism, where divergence between mo
 
 ---
 
-### Beta Distribution (D4)
+### Beta Distribution (D1)
 
-In this framework, the unknown probability of success p is treated as a random variable:
+To move from a discrete belief model to a more realistic continuous framework, I model the unknown edge p using a Beta distribution (p ~ B(alpha, beta)):
 
-p \sim \text{Beta}(\alpha, \beta)
+Starting from a prior of Beta(2,2), beliefs are updated sequentially after each outcome:
+    - Heads increases alpha
+    - Tails increases beta
 
-where:
-	•	\alpha represents evidence in favour of successful outcomes
-	•	\beta represents evidence in favour of unsuccessful outcomes
+The posterior mean (alpha/(alpha+beta)) provides an estimate of the underlying edge, while the full posterior captures the model's confidence.
 
-Starting from a prior belief of Beta(2,2), the model updates sequentially after each observation:
-	•	Heads \rightarrow \alpha + 1
-	•	Tails \rightarrow \beta + 1
+For true_p = 0.8, edge is strong, hence the beta distribution quickly concentrates around the posterior mean.
 
-This gives a simple and interpretable Bayesian learning rule, where the posterior mean is:
+![Beta Evolution](figres/beta_evolution.png)
 
-\hat{p} = \frac{\alpha}{\alpha + \beta}
+This is useful because trading decisions should depend not only on the estimated edge, but also on how certain the model is that the edge is favourable. I use the posterior distribution to calculate:
+    - the probability that the edge is bad (p <= 0.5)
+    - the probability that the edge is good (p > 0.5)
 
-This posterior mean is then used to guide trading decisions and, later, position sizing.
+These probabilities are then used for stopping and detection rules.
 
-### Regime Change (D5)
+### Regime Change (D2)
 
-### Adaptation (D6)
+### Adaptation (D3)
 
 ### Key Insights
 
 
 ---
 
-## Hybrid Models (D7)
+## Hybrid Models (D4)
 
 ### Key Insights
 
 --
 
-## Regime Detection & Control (D8)
+## Regime Detection & Control (D5)
 
 ### Key Insights
 
