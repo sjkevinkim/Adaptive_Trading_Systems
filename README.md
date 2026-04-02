@@ -28,7 +28,7 @@ Finally, I incorporate a regime detection mechanism, where divergence between mo
 
 ---
 
-### Beta Distribution (D1)
+## Beta Distribution (D1)
 
 To move from a discrete belief model to a more realistic continuous framework, I model the unknown edge p using a Beta distribution (p ~ B(alpha, beta)):
 
@@ -50,11 +50,13 @@ This is useful because trading decisions should depend not only on the estimated
 
 These probabilities are then used for stopping and detection rules.
 
-### Regime Change (D2)
+--
 
-### Adaptation (D3)
+## Regime Change (D2)
 
-### Key Insights
+## Adaptation (D3)
+
+
 
 
 ---
