@@ -50,7 +50,7 @@ This is useful because trading decisions should depend not only on the estimated
 
 These probabilities are then used for stopping and detection rules.
 
---
+---
 
 ## Regime Change (D2)
 
@@ -65,17 +65,17 @@ These probabilities are then used for stopping and detection rules.
 
 ### Key Insights
 
---
+---
 
 ## Regime Detection & Control (D5)
 
 ### Key Insights
 
--- 
+---
 
 ## Limitations
 
---
+---
 
 ## Tech Stack
 - Python
