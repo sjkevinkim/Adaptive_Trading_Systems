@@ -28,7 +28,7 @@ Finally, I incorporate a regime detection mechanism, where divergence between mo
 
 ---
 
-## Beta Distribution (D1)
+## Beta Distribution
 
 To move from a discrete belief model to a more realistic continuous framework, I model the unknown edge p using a **Beta distribution** (p ~ B(alpha, beta)):
 
@@ -53,7 +53,7 @@ These probabilities are then used for stopping and detection rules.
 
 ---
 
-## Regime Change (D2)
+## Regime Change
 
 ### Setup
 
@@ -134,7 +134,7 @@ This plot shows how the Kelly position size evolves over time.
 
 ---
 
-## Adaptation (D3)
+## Adaptation
 
 In a non-stationary environment, the key challenge is not just estimating the edge, but **adapting quickly when the edge changes**.
 
@@ -190,13 +190,13 @@ This motivates the development of **hybrid models**, which combine both signals.
 
 ---
 
-## Hybrid Models (D4)
+## Hybrid Models 
 
 ### Key Insights
 
 ---
 
-## Regime Detection & Control (D5)
+## Regime Detection & Control 
 
 ### Key Insights
 
