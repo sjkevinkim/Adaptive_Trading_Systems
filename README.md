@@ -190,7 +190,9 @@ This motivates the development of **hybrid models**, which combine both signals.
 
 ---
 
-## Hybrid Models 
+## Hybrid Models: Combining Stability and Responsiveness
+
+Neither the Bayesian estimator nor the rolling estimator is sufficient on its own in a non-stationary environment.
 
 I combine the Bayesian estimate and the Rolling estimate by using a weighting of 'w' for Rolling and '1-w' for the Bayesian estimate.
 
@@ -199,7 +201,16 @@ Hence, the combined estimate would be designed as below:
 ```python
 p_combined = w * recent_p + (1 - w) * p_hat
 ```
-for some w between 0 and 1, where recent_p, p_hat represents the Rolling estimate, Bayesian estimate respectively.
+for some w between 0 and 1, where w controls the trade-off between responsiveness and stability.
+'recent_p' and 'p_hat' represents the Rolling estimate, Bayesian estimate respectively.
+
+### Model Setup
+
+- True probability shifts from **0.8 → 0.45 at step 50**
+- Bayesian estimate: posterior mean of Beta distribution  
+- Rolling estimate: average of recent outcomes (window = 20)  
+- Hybrid estimate: weighted combination of both 
+- Position sizing: **Half-Kelly based on each estimate**
 
 Below are previous plots with the addition of the hybrid model, where we have initially chosen w=0.5
 
@@ -215,13 +226,50 @@ Below are previous plots with the addition of the hybrid model, where we have in
 
 ![Wealth paths under regime change](figures/wealth_paths_under_regime_change_3.png)
 
-### Key Insights
+### Key Observations
+
+- The hybrid model **captures early growth** from the rolling estimator  
+  - It increases position size faster than the Bayesian model in strong-edge environments  
+
+- At the same time, it retains **stability from the Bayesian estimator**  
+  - It avoids the extreme overreaction seen in pure rolling strategies  
+
+- The hybrid strategy produces:
+  - Higher wealth than Bayesian alone  
+  - Lower drawdowns than rolling alone  
+
+### Role of the Weight Parameter (w)
+
+The parameter w determines how much the model trusts recent data:
+
+- **Low w (closer to Bayesian):**
+  - More stable  
+  - Slower to adapt  
+
+- **High w (closer to rolling):**
+  - Faster adaptation  
+  - More sensitive to noise  
+
+This creates a **tunable balance between bias and variance**, allowing the model to adapt to different environments.
+
+### Interpretation
+
+The hybrid model reflects a key principle in trading:
+
+- No single signal is reliable on its own  
+- Combining signals can improve robustness  
+
+The hybrid estimator acts as a **risk-aware compromise**, allowing the strategy to:
+- respond to new information  
+- while avoiding overreaction to short-term noise  
 
 ---
 
 ## Regime Detection & Control 
 
 ### Key Insights
+
+
 
 ---
 
