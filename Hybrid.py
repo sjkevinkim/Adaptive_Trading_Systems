@@ -254,6 +254,7 @@ plt.xlabel("Step")
 plt.ylabel("Wealth")
 plt.title("Wealth Paths Under Regime Change")
 plt.legend()
+plt.savefig("figures/wealth_paths_under_regime_change_3.png")
 plt.show()
 
 # Plot 2: Bet fraction over time
@@ -266,6 +267,7 @@ plt.xlabel("Step")
 plt.ylabel("Bet fraction")
 plt.title("Bet Fractions Over Time")
 plt.legend()
+plt.savefig("figures/bet_size_3.png")
 plt.show()
 
 
@@ -390,6 +392,7 @@ plt.xlabel("Step")
 plt.ylabel("Probability")
 plt.title("Bayesian vs Rolling vs Hybrid Estimates of p")
 plt.legend()
+plt.savefig("figures/p_estimates_3.png")
 plt.show()
 
 

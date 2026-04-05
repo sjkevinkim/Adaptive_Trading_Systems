@@ -192,6 +192,29 @@ This motivates the development of **hybrid models**, which combine both signals.
 
 ## Hybrid Models 
 
+I combine the Bayesian estimate and the Rolling estimate by using a weighting of 'w' for Rolling and '1-w' for the Bayesian estimate.
+
+Hence, the combined estimate would be designed as below:
+
+```python
+p_combined = w * recent_p + (1 - w) * p_hat
+```
+for some w between 0 and 1, where recent_p, p_hat represents the Rolling estimate, Bayesian estimate respectively.
+
+Below are previous plots with the addition of the hybrid model, where we have initially chosen w=0.5
+
+### Plot 8 Bet fractions over time
+
+![Bet fractions over time](figures/bet_size_3.png)
+
+### Plot 9 Estimates of true_p under regime change
+
+![Estimates of p](figures/p_estimates_3.png)
+
+### Plot 10 Wealth paths under regime change
+
+![Wealth paths under regime change](figures/wealth_paths_under_regime_change_3.png)
+
 ### Key Insights
 
 ---
