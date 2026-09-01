@@ -324,7 +324,9 @@ However:
 ### Key Insights
 
 Regime change detection can be based on model divergence.
+
 Position sizing is the main tool for managing model risk.
+
 Risk control improves stability without fully sacrificing returns.
 
 **A robust trading system must combine adaptation and risk control.**
